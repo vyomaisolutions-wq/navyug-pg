@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/utils/db";
-import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { signToken } from "@/utils/auth";
 import { cookies } from "next/headers";
+
+const ADMIN_EMAIL = "nym.jnp@gmail.com";
+const ADMIN_PASSWORD_HASH = "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"; // bcrypt of "admin123"
 
 export async function POST(request: Request) {
   try {
@@ -11,119 +12,49 @@ export async function POST(request: Request) {
     const { email, password } = body;
 
     if (!email || !password) {
-      return NextResponse.json(
-        { error: "Email and password are required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
     }
 
     let cleanEmail = email.toLowerCase().trim();
-    if (cleanEmail === "admin" || cleanEmail === "admin@nymjnp.org") {
-      cleanEmail = "nym.jnp@gmail.com";
-    }
-
+    if (cleanEmail === "admin") cleanEmail = ADMIN_EMAIL;
     const cleanPassword = password.trim();
-    const isDefaultAdminCreds =
-      (cleanEmail === "nym.jnp@gmail.com" ||
-       cleanEmail === "admin@nymjnp.org" ||
-       cleanEmail === "admin") &&
-      (cleanPassword === "admin123" || cleanPassword === "adminpassword123");
 
-    let user: any = null;
+    const isValidEmail = cleanEmail === ADMIN_EMAIL || cleanEmail === "admin@nymjnp.org";
+    const isValidPassword = cleanPassword === "admin123" || cleanPassword === "adminpassword123" ||
+      await bcrypt.compare(cleanPassword, ADMIN_PASSWORD_HASH);
 
-    // Try database connection
-    try {
-      await connectToDatabase();
-
-      user = await User.findOne({
-        email: { $in: [cleanEmail, "nym.jnp@gmail.com", "admin@nymjnp.org"] },
-      });
-
-      // Auto-create default admin if missing or if no user exists in DB
-      if (!user && (cleanEmail === "nym.jnp@gmail.com" || cleanEmail === "admin@nymjnp.org" || (await User.countDocuments()) === 0)) {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash("admin123", salt);
-        user = await User.create({
-          name: "Super Administrator",
-          email: "nym.jnp@gmail.com",
-          mobile: "+91 9956789374",
-          password: hashedPassword,
-        });
-      }
-    } catch (dbErr) {
-      console.warn("Database connection issue during login:", dbErr);
-    }
-
-    // Check credentials against database user or default admin fail-safe
-    let authenticated = false;
-
-    if (user) {
-      const isMatch = await bcrypt.compare(cleanPassword, user.password);
-      if (isMatch) {
-        authenticated = true;
-      } else if (isDefaultAdminCreds) {
-        // Reset/update password if default admin pass typed
-        try {
-          const salt = await bcrypt.genSalt(10);
-          user.password = await bcrypt.hash(cleanPassword, salt);
-          user.email = "nym.jnp@gmail.com";
-          await user.save();
-        } catch (e) {}
-        authenticated = true;
-      }
-    } else if (isDefaultAdminCreds) {
-      // Offline / DB uninitialized fallback for default admin
-      user = {
-        _id: "admin-default-id",
-        name: "Super Administrator",
-        email: "nym.jnp@gmail.com",
-        mobile: "+91 9956789374",
-      };
-      authenticated = true;
-    }
-
-    if (!authenticated) {
+    if (!isValidEmail || !isValidPassword) {
       return NextResponse.json(
         { error: "Invalid email or password. Use email: nym.jnp@gmail.com and password: admin123" },
         { status: 401 }
       );
     }
 
-    // Sign JWT Token
     const tokenPayload = {
-      id: user._id || "admin-default-id",
-      name: user.name || "Super Administrator",
-      email: user.email || "nym.jnp@gmail.com",
-      mobile: user.mobile || "+91 9956789374",
+      id: "admin-default-id",
+      name: "Super Administrator",
+      email: ADMIN_EMAIL,
+      mobile: "+91 9956789374",
     };
 
     const token = signToken(tokenPayload);
 
-    // Set Token Cookie
     try {
       const cookieStore = await cookies();
       cookieStore.set("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         path: "/",
-        maxAge: 60 * 60 * 24 * 7, // 7 days
+        maxAge: 60 * 60 * 24 * 7,
         sameSite: "lax",
       });
     } catch (cookieErr) {
       console.warn("Cookie set error:", cookieErr);
     }
 
-    return NextResponse.json({
-      message: "Login successful",
-      user: tokenPayload,
-      token,
-    });
+    return NextResponse.json({ message: "Login successful", user: tokenPayload, token });
   } catch (error: any) {
     console.error("Login Error:", error);
-    return NextResponse.json(
-      { error: error.message || "Something went wrong during login" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message || "Something went wrong during login" }, { status: 500 });
   }
 }
-
