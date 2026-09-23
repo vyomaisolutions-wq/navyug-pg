@@ -18,42 +18,10 @@ export default function NewsDetailClient({ params }: { params: Promise<{ id: str
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        setLoading(true);
-        // 1. Try to fetch specific post by ID from API
-        const res = await fetch(`/api/posts/${id}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.post) {
-            setPost({
-              id: data.post._id,
-              title: data.post.title,
-              summary: data.post.summary,
-              content: data.post.content,
-              category: data.post.category,
-              date: data.post.date,
-              image: data.post.image || "/poster_navyug.jpg",
-              author: data.post.author || "Navyug Admin Desk",
-            });
-          }
-        }
-      } catch (err) {
-        console.warn("Using static article fallback:", err);
-      }
-
-      // Check fallback in static data if not set yet
-      setPost((current) => {
-        if (current) return current;
-        const found = newsData.find((n) => n.id === id);
-        return found || newsData[0] || null;
-      });
-
-      setOtherPosts(newsData.filter((n) => n.id !== id).slice(0, 10));
-      setLoading(false);
-    };
-
-    fetchArticle();
+    const found = newsData.find((n) => n.id === id) || newsData[0] || null;
+    setPost(found);
+    setOtherPosts(newsData.filter((n) => n.id !== id).slice(0, 10));
+    setLoading(false);
   }, [id]);
 
   const handleShare = () => {

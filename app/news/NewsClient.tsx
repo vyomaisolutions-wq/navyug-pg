@@ -16,35 +16,7 @@ export default function NewsClient() {
 
   const ITEMS_PER_PAGE = 9;
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const res = await fetch("/api/posts");
-        if (res.ok) {
-          const data = await res.json();
-          if (data.posts && Array.isArray(data.posts) && data.posts.length > 0) {
-            const mappedNews = data.posts.map((p: any) => ({
-              id: p._id || p.id,
-              title: p.title,
-              summary: p.summary,
-              content: p.content,
-              category: p.category,
-              date: p.date,
-              image: p.image || "/poster_navyug.jpg",
-              author: p.author || "Navyug Admin Desk",
-            }));
-            setNewsList(mappedNews);
-            return;
-          }
-        }
-        setNewsList(newsData);
-      } catch (err) {
-        console.warn("Using static news fallback:", err);
-        setNewsList(newsData);
-      }
-    };
-    fetchNews();
-  }, []);
+
 
   useEffect(() => {
     setCurrentPage(1);

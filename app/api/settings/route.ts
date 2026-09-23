@@ -10,40 +10,18 @@ const DEFAULT_POPUP_BTN_TEXT = "Apply For Admission";
 const DEFAULT_POPUP_BTN_LINK = "/admissions";
 
 export async function GET() {
-  try {
-    await connectToDatabase();
-    let settings = await SiteSetting.findOne({ key: "default_settings" });
-
-    if (!settings) {
-      settings = await SiteSetting.create({
-        key: "default_settings",
-        bannerTitle: DEFAULT_BANNER_TITLE,
-        bannerEnabled: true,
-        popupEnabled: true,
-        popupTitle: DEFAULT_POPUP_TITLE,
-        popupContent: DEFAULT_POPUP_CONTENT,
-        popupImage: "",
-        popupButtonText: DEFAULT_POPUP_BTN_TEXT,
-        popupButtonLink: DEFAULT_POPUP_BTN_LINK,
-      });
-    }
-
-    return NextResponse.json({ settings });
-  } catch (error: any) {
-    console.warn("GET Settings DB Error, returning default settings:", error?.message);
-    return NextResponse.json({
-      settings: {
-        bannerTitle: DEFAULT_BANNER_TITLE,
-        bannerEnabled: true,
-        popupEnabled: true,
-        popupTitle: DEFAULT_POPUP_TITLE,
-        popupContent: DEFAULT_POPUP_CONTENT,
-        popupImage: "",
-        popupButtonText: DEFAULT_POPUP_BTN_TEXT,
-        popupButtonLink: DEFAULT_POPUP_BTN_LINK,
-      },
-    });
-  }
+  return NextResponse.json({
+    settings: {
+      bannerTitle: DEFAULT_BANNER_TITLE,
+      bannerEnabled: true,
+      popupEnabled: true,
+      popupTitle: DEFAULT_POPUP_TITLE,
+      popupContent: DEFAULT_POPUP_CONTENT,
+      popupImage: "/poster_navyug.jpg",
+      popupButtonText: DEFAULT_POPUP_BTN_TEXT,
+      popupButtonLink: DEFAULT_POPUP_BTN_LINK,
+    },
+  });
 }
 
 export async function PUT(request: Request) {

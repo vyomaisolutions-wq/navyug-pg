@@ -10,7 +10,7 @@ export async function generateMetadata() {
 export default function GalleryPage() {
   return (
     <main className="pt-36 sm:pt-40 lg:pt-44 pb-20 min-h-screen bg-brand-bg">
-      <Gallery />
+      <Gallery limit={0} showViewAll={false} />
     </main>
   );
 }

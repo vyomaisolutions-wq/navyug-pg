@@ -16,46 +16,40 @@ interface PopupSettings {
 export default function AnnouncementPopup() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [settings, setSettings] = useState<PopupSettings | null>(null);
 
   useEffect(() => {
-    // Show popup ONLY on the home page ("/")
+    // Show popup ONLY on the home page ("/") once per browser session
     if (pathname !== "/") {
       return;
     }
 
-    async function loadPopup() {
-      try {
-        const res = await fetch("/api/settings");
-        if (res.ok) {
-          const data = await res.json();
-          const siteSettings: PopupSettings = data.settings || {};
-          setSettings(siteSettings);
-
-          // If popup status is ON (enabled), show popup immediately on home page load
-          if (siteSettings.popupEnabled) {
-            setIsOpen(true);
-          }
-        }
-      } catch (err) {
-        console.warn("Failed to load popup settings:", err);
+    try {
+      const dismissed = typeof window !== "undefined" && sessionStorage.getItem("navyug_popup_dismissed");
+      if (!dismissed) {
+        // Show smoothly after a slight 800ms entrance
+        const timer = setTimeout(() => setIsOpen(true), 800);
+        return () => clearTimeout(timer);
       }
+    } catch (e) {
+      setIsOpen(true);
     }
-
-    loadPopup();
   }, [pathname]);
 
   const handleClose = () => {
     setIsOpen(false);
+    try {
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("navyug_popup_dismissed", "true");
+      }
+    } catch (e) {}
   };
 
-  // Only render popup on home page ("/") if enabled
-  if (pathname !== "/" || !settings || !settings.popupEnabled) {
+  if (pathname !== "/") {
     return null;
   }
 
-  const posterSrc = settings.popupImage || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop";
-  const targetLink = settings.popupButtonLink || "/admissions";
+  const posterSrc = "/poster_navyug.jpg";
+  const targetLink = "/admissions";
 
   return (
     <AnimatePresence>

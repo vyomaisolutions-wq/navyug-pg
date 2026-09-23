@@ -1,17 +1,9 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/utils/db";
-import Post from "@/models/Post";
+import { newsData } from "@/data/news";
 import { getAdminFromRequest } from "@/utils/auth";
 
 export async function GET() {
-  try {
-    await connectToDatabase();
-    const posts = await Post.find({}).sort({ createdAt: -1 });
-    return NextResponse.json({ posts });
-  } catch (error: any) {
-    console.warn("GET Posts DB Connection Error, returning fallback array:", error?.message);
-    return NextResponse.json({ posts: [] });
-  }
+  return NextResponse.json({ posts: newsData });
 }
 
 export async function POST(request: Request) {

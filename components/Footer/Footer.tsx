@@ -274,7 +274,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="text-[#FFF200] hover:underline font-extrabold transition-colors"
             >
-              VyomAI Solutions Pvt Ltd Pvt. Ltd.
+              VyomAI Solutions Pvt Ltd.
             </a>
           </span>
           <div className="flex items-center gap-6">

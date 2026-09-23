@@ -1,17 +1,22 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/utils/db";
-import Topper from "@/models/Topper";
+import { toppersData } from "@/data/toppers";
 import { getAdminFromRequest } from "@/utils/auth";
 
 export async function GET() {
-  try {
-    await connectToDatabase();
-    const toppers = await Topper.find({}).sort({ year: -1, rank: 1, createdAt: -1 });
-    return NextResponse.json({ toppers });
-  } catch (error: any) {
-    console.warn("GET Toppers DB Error, returning fallback array:", error?.message);
-    return NextResponse.json({ toppers: [] });
-  }
+  const flattened = toppersData.flatMap((y) =>
+    y.students.map((s) => ({
+      _id: s.id,
+      name: s.name,
+      year: y.year,
+      board: s.board,
+      rank: s.rank,
+      rankType: s.rankType,
+      percentage: s.percentage,
+      photo: s.photo,
+      category: "Rank Holder",
+    }))
+  );
+  return NextResponse.json({ toppers: flattened });
 }
 
 export async function POST(request: Request) {

@@ -48,4 +48,20 @@ export const testimonialsData: Testimonial[] = [
     rating: 5,
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop",
   },
+  {
+    id: "6",
+    name: "Neha Pandey",
+    role: "Student (BSc Final Year)",
+    text: "The faculty in the science department are incredibly supportive. The physics and chemistry lab practicals are conducted systematically, preparing us thoroughly for competitive exams.",
+    rating: 5,
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop",
+  },
+  {
+    id: "7",
+    name: "Rohan Vishwakarma",
+    role: "Alumnus (BA Hindi)",
+    text: "Navyug P.G. College provided me with wonderful mentoring and library resources. The disciplined campus and affordable fee structure make it the ideal college in Jaunpur.",
+    rating: 5,
+    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=150&auto=format&fit=crop",
+  },
 ];

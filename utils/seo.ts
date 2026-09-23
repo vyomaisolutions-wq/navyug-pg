@@ -1,6 +1,4 @@
 import { Metadata } from "next";
-import { connectToDatabase } from "@/utils/db";
-import PageSEO from "@/models/PageSEO";
 
 export interface DefaultSEOItem {
   pageSlug: string;
@@ -14,111 +12,102 @@ export const DEFAULT_PAGE_SEO: Record<string, DefaultSEOItem> = {
   home: {
     pageSlug: "home",
     pageName: "Home Page",
-    title: "Abhilasha Group of Academies | Where Teaching is an Interest",
-    description: "Established in 2010, Navyug P.G. College and Maa Durga Abhilasha Inter College provide affordable, value-based, quality English & Hindi medium education for classes Playgroup to 12th in Gaura, Kaptanganj Basti, Uttar Pradesh.",
-    keywords: "Abhilasha Group of Academies, Navyug P.G. College, Maa Durga Abhilasha Inter College, Kaptanganj Basti School, UP Board School",
+    title: "Navyug P.G. College | Madhupur, Jaunpur, Uttar Pradesh",
+    description: "Navyug P.G. College (नवयुग स्नातकोत्तर महाविद्यालय), Madhupur, Jaunpur. Affiliated to Veer Bahadur Singh Purvanchal University. Offering BA, BSc, BCA, and MA degree courses with 16 years of academic trust and excellence.",
+    keywords: "Navyug P.G. College, Navyug Degree College Jaunpur, Madhupur Jaunpur College, Purvanchal University Affiliated, BA BSc BCA MA College, Best Degree College Jaunpur",
   },
   about: {
     pageSlug: "about",
     pageName: "About Us Page",
-    title: "About Us | Abhilasha Group of Academies",
-    description: "Learn about Navyug P.G. College & Maa Durga Abhilasha Inter College history, founder director message, vision, mission, and branches in Gaura, Kaptanganj Basti, UP.",
-    keywords: "About Navyug P.G. College, School History, Director Hari Shankar Pandey, Vision Mission, Kaptanganj Basti",
+    title: "About Us | Navyug P.G. College, Madhupur, Jaunpur",
+    description: "Learn about Navyug P.G. College history, leadership of Director Dr. Sangeeta Dubey, vision, mission, and 16+ years of educational excellence in Madhupur, Jaunpur, UP.",
+    keywords: "About Navyug P.G. College, College History, Director Dr Sangeeta Dubey, Purvanchal University, Madhupur Jaunpur",
   },
   academics: {
     pageSlug: "academics",
     pageName: "Academics Page",
-    title: "Academic Programs & Curriculum | Abhilasha Group of Academies",
-    description: "Explore our nursery to 12th class curriculum, examination schedules, subjects, streams, and academic achievements.",
-    keywords: "Curriculum, UP Board Syllabus, Primary Classes, High School, Intermediate, Science Commerce Arts",
+    title: "Degree Programs & Academics | Navyug P.G. College",
+    description: "Explore undergraduate (BA, BSc, BCA) and postgraduate (MA) courses, semester examinations, curriculum, and modern lab facilities at Navyug P.G. College.",
+    keywords: "BA Course Jaunpur, BSc Degree Madhupur, BCA Computer Applications, MA Post Graduation, Purvanchal University Syllabus",
   },
   facilities: {
     pageSlug: "facilities",
     pageName: "Campus Facilities Page",
-    title: "Campus Infrastructure & Facilities | Abhilasha Group of Academies",
-    description: "Discover our science labs, computer labs, library, smart classrooms, sports ground, and campus CCTV security parameters.",
-    keywords: "School Facilities, Science Lab, Computer Lab, Library, Smart Classrooms, Campus Security",
+    title: "Campus Infrastructure & Facilities | Navyug P.G. College",
+    description: "Discover our hi-tech computer & AI labs, advanced physics and chemistry labs, rich college library, sports grounds, and free Wi-Fi enabled campus.",
+    keywords: "College Facilities, Computer Lab BCA, Science Laboratories, College Library Jaunpur, Wi-Fi Campus, Sports Ground",
   },
   news: {
     pageSlug: "news",
     pageName: "News & Articles Page",
-    title: "News & School Circulars | Abhilasha Group of Academies",
-    description: "Stay updated with latest announcements, examination timetables, board results, and school events.",
-    keywords: "School News, Circulars, Board Exam Updates, Announcements, Events",
+    title: "Notices, Circulars & Announcements | Navyug P.G. College",
+    description: "Stay updated with latest Purvanchal University examination timetables, admission circulars, NSS youth camps, and student achievements.",
+    keywords: "College Notices, Purvanchal University Exam Schedule, Admission Circulars, NSS Camp, Jaunpur College News",
   },
   admissions: {
     pageSlug: "admissions",
     pageName: "Admissions Page",
-    title: "Admissions 2026-27 & Registration | Abhilasha Group of Academies",
-    description: "Apply online for admission to Classes Nursery to 12th. View admission procedure, required documents, and fee guidelines.",
-    keywords: "School Admission, Online Registration, Fee Structure, Admission Process, Form Download",
+    title: "Admissions 2026-27 & Registration | Navyug P.G. College",
+    description: "Apply online for admission to BA, BSc, BCA, and MA courses for academic session 2026-27. View admission criteria, required documents, and 100% scholarship support.",
+    keywords: "Degree Admission 2026-27, Navyug PG College Registration, BCA Admission Jaunpur, BSc BA Admission, College Scholarship Scheme",
   },
   toppers: {
     pageSlug: "toppers",
     pageName: "Toppers Gallery Page",
-    title: "Toppers Gallery & Wall of Fame | Abhilasha Group of Academies",
-    description: "Celebrating our top ranking students in UP Board Class 10 High School and Class 12 Intermediate board examinations.",
-    keywords: "District Toppers, Board Rankers, Academic Excellence, Merit List, Top Performers",
+    title: "University Toppers & Wall of Fame | Navyug P.G. College",
+    description: "Celebrating our top ranking students in Veer Bahadur Singh Purvanchal University examinations across BCA, BSc, BA, and MA faculties.",
+    keywords: "Purvanchal University Toppers, Merit Rankers Jaunpur, Academic Excellence, Top Students Wall of Fame",
   },
   downloads: {
     pageSlug: "downloads",
     pageName: "Downloads Page",
-    title: "Downloads & Official Forms | Abhilasha Group of Academies",
-    description: "Download admission application forms, fee structure, academic syllabus, prospectus, and holiday calendar.",
-    keywords: "Download Admission Form, School Prospectus, Fee Structure PDF, Syllabus Download",
+    title: "Downloads & Official Prospectus | Navyug P.G. College",
+    description: "Download official admission application forms, fee structure breakdown, academic syllabus, and college prospectus.",
+    keywords: "Download Admission Form, College Prospectus PDF, Fee Structure Download, Purvanchal University Syllabus",
   },
   contact: {
     pageSlug: "contact",
     pageName: "Contact Us Page",
-    title: "Contact Us & Campus Address | Abhilasha Group of Academies",
-    description: "Get in touch with our admissions helpline, director's office, or visit our campus in Gaura, Kaptanganj Basti, UP.",
-    keywords: "Contact School, School Helpline, Campus Address, Admission Inquiry, Office Hours",
+    title: "Contact Us & Campus Location | Navyug P.G. College",
+    description: "Contact the admissions helpline, administrative office, or visit our campus in Madhupur, Jaunpur, Uttar Pradesh.",
+    keywords: "Contact Navyug PG College, Admission Helpline 7617755655, Madhupur Jaunpur Location, Campus Map",
   },
   gallery: {
     pageSlug: "gallery",
     pageName: "Photo Gallery Page",
-    title: "Campus Photo Gallery | Abhilasha Group of Academies",
-    description: "View snapshots of campus life, classrooms, science laboratories, sports tournaments, and annual day events.",
-    keywords: "School Gallery, Campus Photos, Classroom Pictures, Sports Events, Lab Photos",
+    title: "Campus Snapshots & Photo Gallery | Navyug P.G. College",
+    description: "View snapshots of campus life, classrooms, computer & science laboratories, sports tournaments, and annual events at Navyug P.G. College.",
+    keywords: "Campus Photos, College Gallery Jaunpur, Snapshots of Campus Life, Science Lab Pictures, Classroom Photos",
   },
 };
 
 export async function getPageSEO(slug: string): Promise<Metadata> {
   const fallback = DEFAULT_PAGE_SEO[slug] || DEFAULT_PAGE_SEO.home;
+  const keywordsArr = fallback.keywords.split(",").map((k) => k.trim());
 
-  try {
-    await connectToDatabase();
-    const doc = await PageSEO.findOne({ pageSlug: slug.toLowerCase() });
-
-    const title = doc?.title || fallback.title;
-    const description = doc?.description || fallback.description;
-    const keywordsStr = doc?.keywords || fallback.keywords;
-    const keywordsArr = keywordsStr ? keywordsStr.split(",").map((k: string) => k.trim()) : [];
-
-    return {
-      title,
-      description,
-      keywords: keywordsArr.length > 0 ? keywordsArr : undefined,
-      openGraph: {
-        title,
-        description,
-        type: "website",
-      },
-      twitter: {
-        card: "summary_large_image",
-        title,
-        description,
-      },
-    };
-  } catch (error) {
-    return {
+  return {
+    title: fallback.title,
+    description: fallback.description,
+    keywords: keywordsArr.length > 0 ? keywordsArr : undefined,
+    openGraph: {
       title: fallback.title,
       description: fallback.description,
-      keywords: fallback.keywords.split(",").map((k) => k.trim()),
-      openGraph: {
-        title: fallback.title,
-        description: fallback.description,
-      },
-    };
-  }
+      type: "website",
+      siteName: "Navyug P.G. College",
+      images: [
+        {
+          url: "/hero_navyug.jpg",
+          width: 1200,
+          height: 630,
+          alt: fallback.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: fallback.title,
+      description: fallback.description,
+      images: ["/hero_navyug.jpg"],
+    },
+  };
 }

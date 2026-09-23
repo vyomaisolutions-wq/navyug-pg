@@ -1,18 +1,9 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/utils/db";
-import Facility from "@/models/Facility";
-import { getAdminFromRequest } from "@/utils/auth";
 import { facilitiesData } from "@/data/facilities";
+import { getAdminFromRequest } from "@/utils/auth";
 
 export async function GET() {
-  try {
-    await connectToDatabase();
-    const items = await Facility.find({}).sort({ order: 1, createdAt: -1 });
-    return NextResponse.json({ facilities: items });
-  } catch (error: any) {
-    console.warn("GET Facilities DB Error:", error?.message);
-    return NextResponse.json({ facilities: [] });
-  }
+  return NextResponse.json({ facilities: facilitiesData });
 }
 
 export async function POST(request: Request) {

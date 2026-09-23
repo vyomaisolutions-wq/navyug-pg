@@ -18,41 +18,7 @@ import "swiper/css/navigation";
 export default function Testimonials() {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
-  const [items, setItems] = useState<TestimonialType[]>([]);
-
-  useEffect(() => {
-    async function loadTestimonials() {
-      const deletedIds: string[] = typeof window !== "undefined"
-        ? JSON.parse(localStorage.getItem("deleted_testimonial_ids") || "[]")
-        : [];
-
-      try {
-        const res = await fetch("/api/testimonials");
-        if (res.ok) {
-          const data = await res.json();
-          if (data.testimonials && Array.isArray(data.testimonials)) {
-            const active = data.testimonials
-              .filter((t: any) => !deletedIds.includes(String(t._id || t.id)))
-              .map((t: any) => ({
-                id: t._id || t.id,
-                name: t.name,
-                role: t.role,
-                text: t.text,
-                rating: t.rating || 5,
-                image: t.image || "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&auto=format&fit=crop",
-              }));
-            setItems(active);
-            return;
-          }
-        }
-        setItems([]);
-      } catch (err) {
-        setItems([]);
-      }
-    }
-
-    loadTestimonials();
-  }, []);
+  const [items] = useState<TestimonialType[]>(testimonialsData);
 
   return (
     <section className="py-10 sm:py-12 bg-[#F3F6FF] border-y border-[#E4E7EC] relative overflow-hidden">

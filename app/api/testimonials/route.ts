@@ -1,18 +1,9 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/utils/db";
-import Testimonial from "@/models/Testimonial";
-import { getAdminFromRequest } from "@/utils/auth";
 import { testimonialsData } from "@/data/testimonials";
+import { getAdminFromRequest } from "@/utils/auth";
 
 export async function GET() {
-  try {
-    await connectToDatabase();
-    const items = await Testimonial.find({}).sort({ createdAt: -1 });
-    return NextResponse.json({ testimonials: items });
-  } catch (error: any) {
-    console.warn("GET Testimonials DB Connection Error:", error?.message);
-    return NextResponse.json({ testimonials: [] });
-  }
+  return NextResponse.json({ testimonials: testimonialsData });
 }
 
 export async function POST(request: Request) {

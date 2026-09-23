@@ -9,74 +9,16 @@ import Container from "@/components/Common/Container";
 import AnimatedSection from "@/components/Common/AnimatedSection";
 
 export default function ToppersClient() {
-  const [dbToppers, setDbToppers] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchToppers = async () => {
-      try {
-        const res = await fetch("/api/toppers");
-        if (res.ok) {
-          const data = await res.json();
-          if (data.toppers && Array.isArray(data.toppers) && data.toppers.length > 0) {
-            setDbToppers(data.toppers);
-          }
-        }
-      } catch (err) {
-        console.warn("Using static toppers data fallback:", err);
-      }
-    };
-    fetchToppers();
-  }, []);
-
-  const years = React.useMemo(() => {
-    if (dbToppers.length > 0) {
-      const yearSet = new Set(dbToppers.map((t) => t.year));
-      return Array.from(yearSet).sort((a, b) => Number(b) - Number(a));
-    }
-    return toppersData.map((d) => d.year);
-  }, [dbToppers]);
-
+  const years = React.useMemo(() => toppersData.map((d) => d.year), []);
   const [selectedYear, setSelectedYear] = useState<string>("2026");
 
-  useEffect(() => {
-    if (years.length > 0 && !years.includes(selectedYear)) {
-      setSelectedYear(years[0]);
-    }
-  }, [years, selectedYear]);
-
   const { currentStudents, currentSubjects } = React.useMemo(() => {
-    if (dbToppers.length > 0) {
-      const yearItems = dbToppers.filter((t) => t.year === selectedYear);
-      const students = yearItems
-        .filter((t) => t.category !== "Subject Topper")
-        .map((t) => ({
-          id: t._id || t.id,
-          name: t.name,
-          photo: t.photo || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=300&auto=format&fit=crop",
-          percentage: t.percentage,
-          rank: t.rank || 1,
-          board: t.board || "BCA / BSc",
-          rankType: t.rankType || "University Rank",
-        }));
-
-      const subjects = yearItems
-        .filter((t) => t.category === "Subject Topper")
-        .map((t) => ({
-          subject: t.subject || "Subject",
-          studentName: t.name,
-          marks: t.marks || t.percentage,
-          board: t.board || "BCA",
-        }));
-
-      return { currentStudents: students, currentSubjects: subjects };
-    }
-
     const fallbackGroup = toppersData.find((d) => d.year === selectedYear) || toppersData[0];
     return {
       currentStudents: fallbackGroup?.students || [],
       currentSubjects: fallbackGroup?.subjects || [],
     };
-  }, [dbToppers, selectedYear]);
+  }, [selectedYear]);
 
   return (
     <main className="pt-36 sm:pt-40 lg:pt-44 pb-24 min-h-screen bg-brand-bg relative overflow-hidden">

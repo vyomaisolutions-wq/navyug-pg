@@ -21,34 +21,7 @@ import "swiper/css/pagination";
 export default function News() {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
-  const [newsList, setNewsList] = useState<NewsItem[]>(newsData);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch("/api/posts");
-        if (res.ok) {
-          const data = await res.json();
-          if (data.posts && Array.isArray(data.posts) && data.posts.length > 0) {
-            const mapped = data.posts.map((p: any) => ({
-              id: p._id || p.id,
-              title: p.title,
-              summary: p.summary,
-              content: p.content,
-              category: p.category,
-              date: p.date,
-              image: p.image || "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=800&auto=format&fit=crop",
-              author: p.author || "School Desk",
-            }));
-            setNewsList(mapped);
-          }
-        }
-      } catch (err) {
-        console.error("Failed to fetch news posts from API:", err);
-      }
-    };
-    fetchPosts();
-  }, []);
+  const [newsList] = useState<NewsItem[]>(newsData);
 
   const getCategoryColor = (cat: string) => {
     return "bg-[#F3F6FF] text-[#1111E8] border-[#E4E7EC]";

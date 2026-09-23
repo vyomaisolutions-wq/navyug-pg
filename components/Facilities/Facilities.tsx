@@ -38,24 +38,7 @@ const getFacilityIcon = (iconName: string) => {
 };
 
 export default function Facilities() {
-  const [facilities, setFacilities] = useState<any[]>(facilitiesData);
-
-  useEffect(() => {
-    async function loadFacilities() {
-      try {
-        const res = await fetch("/api/facilities");
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data.facilities) && data.facilities.length > 0) {
-            setFacilities(data.facilities);
-          }
-        }
-      } catch (err) {
-        console.warn("Failed to fetch dynamic facilities, using fallback:", err);
-      }
-    }
-    loadFacilities();
-  }, []);
+  const [facilities] = useState<any[]>(facilitiesData);
 
   return (
     <section className="py-24 bg-brand-bg relative overflow-hidden">

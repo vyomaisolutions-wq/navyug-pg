@@ -33,24 +33,7 @@ const getFacilityIcon = (iconName: string) => {
 };
 
 export default function FacilitiesClient() {
-  const [facilities, setFacilities] = useState<any[]>(facilitiesData);
-
-  useEffect(() => {
-    async function loadFacilities() {
-      try {
-        const res = await fetch("/api/facilities");
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data.facilities) && data.facilities.length > 0) {
-            setFacilities(data.facilities);
-          }
-        }
-      } catch (err) {
-        console.warn("Using static facilities data fallback:", err);
-      }
-    }
-    loadFacilities();
-  }, []);
+  const [facilities] = useState<any[]>(facilitiesData);
 
   return (
     <main className="pt-36 sm:pt-40 lg:pt-44 pb-24 min-h-screen bg-brand-bg relative overflow-hidden">

@@ -1,17 +1,9 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/utils/db";
-import Gallery from "@/models/Gallery";
+import { galleryData } from "@/data/gallery";
 import { getAdminFromRequest } from "@/utils/auth";
 
 export async function GET() {
-  try {
-    await connectToDatabase();
-    const items = await Gallery.find({}).sort({ createdAt: -1 });
-    return NextResponse.json({ items });
-  } catch (error: any) {
-    console.warn("GET Gallery DB Connection Error, returning fallback array:", error?.message);
-    return NextResponse.json({ items: [] });
-  }
+  return NextResponse.json({ items: galleryData });
 }
 
 export async function POST(request: Request) {
